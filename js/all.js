@@ -1,5 +1,3 @@
-// const { default: axios } = require("axios");
-
 const productList = document.querySelector('.productWrap');
 const productSelect = document.querySelector('.productSelect');
 const cartList = document.querySelector('.shoppingCart-tableList');
@@ -133,7 +131,6 @@ cartList.addEventListener('click', function (e) {
     //刪除body內的x
     const cartId = e.target.getAttribute("data-id");
     if (cartId == null) {
-        alert("123")
         return;
     }
     console.log(cartId);

@@ -11,7 +11,7 @@
 
 <body>
     <nav class="topBar">
-        <div class="wrap" data-aos="fade-up">
+        <div class="wrap">
             <h1><a href="#" class="logo">WOWOROOM</a></h1>
             <span class="material-icons menuToggle">
                 menu
@@ -281,7 +281,7 @@
             <option value="窗簾">窗簾</option>
         </select>
         <ul class="productWrap"  data-aos="fade-up">
-         <li><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(241, 242, 243); display: block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+         <!-- <li><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(241, 242, 243); display: block;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
             <g transform="rotate(0 50 50)">
               <rect x="47" y="24" rx="3" ry="6" width="6" height="12" fill="#1d0e0b">
                 <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="-0.9166666666666666s" repeatCount="indefinite"></animate>
@@ -331,13 +331,12 @@
                 <animate attributeName="opacity" values="1;0" keyTimes="0;1" dur="1s" begin="0s" repeatCount="indefinite"></animate>
               </rect>
             </g>
-            </svg></li>
+            </svg></li> -->
         </ul>
     </section>
     <section class="shoppingCart"  data-aos="fade-up">
         <h3 class="section-title">我的購物車</h3>
         <div class="overflowWrap">
-         
             <table class="shoppingCart-table">
                 <thead>
                     <tr>
@@ -379,8 +378,7 @@
                     </td>
                     <td>NT$<span class="js-total">計算中</span></td>
                 </tr>
-               </tfoot>
-               
+               </tfoot>            
             </table>
         </div>
     </section>
@@ -428,7 +426,66 @@
             <input type="submit" value="送出預訂資料" class="orderInfo-btn">
         </form>
     </section>
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const ele = document.querySelector(".recommendation-wall");
+          ele.style.cursor = "grab";
+          let pos = { top: 0, left: 0, x: 0, y: 0 };
+          const mouseDownHandler = function (e) {
+            ele.style.cursor = "grabbing";
+            ele.style.userSelect = "none";
+  
+            pos = {
+              left: ele.scrollLeft,
+              top: ele.scrollTop,
+              // Get the current mouse position
+              x: e.clientX,
+              y: e.clientY,
+            };
+  
+            document.addEventListener("mousemove", mouseMoveHandler);
+            document.addEventListener("mouseup", mouseUpHandler);
+          };
+          const mouseMoveHandler = function (e) {
+            // How far the mouse has been moved
+            const dx = e.clientX - pos.x;
+            const dy = e.clientY - pos.y;
+  
+            // Scroll the element
+            ele.scrollTop = pos.top - dy;
+            ele.scrollLeft = pos.left - dx;
+          };
+          const mouseUpHandler = function () {
+            ele.style.cursor = "grab";
+            ele.style.removeProperty("user-select");
+  
+            document.removeEventListener("mousemove", mouseMoveHandler);
+            document.removeEventListener("mouseup", mouseUpHandler);
+          };
+          // Attach the handler
+          ele.addEventListener("mousedown", mouseDownHandler);
+        });
+        // menu 切換
+        let menuOpenBtn = document.querySelector(".menuToggle");
+        let linkBtn = document.querySelectorAll(".topBar-menu a");
+        let menu = document.querySelector(".topBar-menu");
+        menuOpenBtn.addEventListener("click", menuToggle);
+  
+        linkBtn.forEach((item) => {
+          item.addEventListener("click", closeMenu);
+        });
+  
+        function menuToggle() {
+          if (menu.classList.contains("openMenu")) {
+            menu.classList.remove("openMenu");
+          } else {
+            menu.classList.add("openMenu");
+          }
+        }
+        function closeMenu() {
+          menu.classList.remove("openMenu");
+        }
+    </script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
