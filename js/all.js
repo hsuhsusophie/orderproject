@@ -30,8 +30,8 @@ function combineProductHTMLItem(item) {
 alt="">
 <a href="#" class="js-addCart" id="addCardBtn" data-id="${item.id}">加入購物車</a>
 <h3>${item.title}</h3>
-<del class="originPrice">${item.origin_price}</del>
-<p class="nowPrice">${item.price}</p>
+<del class="originPrice">  NT$${toThousands(item.origin_price)}</del>
+<p class="nowPrice">NT$${toThousands(item.price)}</p>
 </li>
 </li>`
 }
@@ -99,7 +99,7 @@ function getCartList() {
     `)
         .then(function (response) {
             //總金額
-            document.querySelector(".js-total").textContent = response.data.finalTotal;
+            document.querySelector(".js-total").textContent = toThousands(response.data.finalTotal);
             cartData = response.data.carts;
             let str = "";
             cartData.forEach(function (item) {
@@ -110,9 +110,9 @@ function getCartList() {
                 <p>${item.product.title}</p>
             </div>
         </td>
-        <td>${item.product.price}</td>
+        <td>NT$${toThousands(item.product.price)}</td>
         <td>${item.quantity}</td>
-        <td>${item.product.price * item.quantity}</td>
+        <td>NT$${toThousands(item.product.price * item.quantity)}</td>
         <td class="discardBtn">
             <a href="#" class="material-icons" data-id="${item.id}">
                 clear
@@ -181,6 +181,10 @@ orderInfoBtn.addEventListener('click', function (e) {
         alert("請輸入訂單資訊");
         return
     }
+    if(validateEmail(customerEmail)===false){
+        alert("請填寫正確的email");
+    }
+
     axios.post(`https://livejs-api.hexschool.io/api/livejs/v1/customer/${api_path}/orders`, {
         "data": {
             "user": {
@@ -202,5 +206,24 @@ orderInfoBtn.addEventListener('click', function (e) {
         getCartList();
     })
 })
+
+
+//util js千分位
+function toThousands(x){
+    let parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,",");
+    return parts.join(".");
+}
+
+function validateEmail(mail) 
+{
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+  {
+    return true
+  }
+    alert("You have entered an invalid email address!")
+    return false
+}
+
 
 
